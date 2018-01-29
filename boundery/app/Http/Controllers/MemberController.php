@@ -26,16 +26,28 @@ class MemberController extends Controller
 
     public function createNewMember(Request $request){
         $this->member = json_decode($request->input('data'));
-        return new CreateMember($this->member)->doCreate();  
+        try{
+            return new CreateMember($this->member)->doCreate();  
+        }catch(MemberCreateException $e){
+            //log exception
+        }
     }
 
     public function getListMember(){
-        return new GetMember()->doGet();
+        try{
+            return new GetMember()->doGet();
+        }catch(MemberGetException $e){
+            //log exception
+        }
     }
 
     public function editMember(Request $request, $id){
-        $this->member = json_decode($request->input('data'));
-        return new EditMember($this->member, $id)->doEdit();
+       try{
+            $this->member = json_decode($request->input('data'));
+            return new EditMember($this->member, $id)->doEdit();
+        }catch(MemberCreateException $e){
+            //log exception
+        }
     }
     
 }

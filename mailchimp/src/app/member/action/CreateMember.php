@@ -14,13 +14,17 @@ class CreateMember {
 	}
 
 	public function doCreate(){
-		$client->request('POST', $config['member_url'],
-			[
-			'auth' => ['apikey', $config['oauth']['apikey']],
-			'body' => json_encode($this->member)
-			]);
+		try{
+			$client->request('POST', $config['member_url'],
+				[
+				'auth' => ['apikey', $config['oauth']['apikey']],
+				'body' => json_encode($this->member)
+				]);
 
-		$this->addInMemcached();
+			$this->addInMemcached();
+		catch(Exception $e){
+			throw new MemberCreateException();	
+		}
 	}
 
 		private function addInMemcached(){
